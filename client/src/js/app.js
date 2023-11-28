@@ -6,7 +6,7 @@ import '../scss/app.scss';
 jQuery.entwine('ss', ($) => {
   var sortableFieldClass = '.TreeDropdownField.treemultiselectfieldsortable'; //.treedropdownfield.sortable
 
-  $(`${sortableFieldClass  } .Select-value`).entwine({
+  $(`${sortableFieldClass  } .treedropdownfield__multi-value`).entwine({
     onmatch() {
       this._super();
 
@@ -20,10 +20,10 @@ jQuery.entwine('ss', ($) => {
         var vals = $(`input[name="${  name  }"]`)
           .val()
           .split(',');
-        var $container = $parent.find('.Select-multi-value-wrapper');
+        var $container = $parent.find('.treedropdownfield__value-container');
 
         // setup data vals
-        $parent.find('.Select-value').each((i, el) => {
+        $parent.find('.treedropdownfield__multi-value').each((i, el) => {
           $(el).attr('data-val', vals[i]);
         });
 
@@ -35,7 +35,7 @@ jQuery.entwine('ss', ($) => {
           var $prevEl;
           vals.forEach((id) => {
             var $el = $parent.find(
-              `.Select-value[data-val="${  id  }"]`,
+              `.treedropdownfield__multi-value[data-val="${  id  }"]`,
             );
             if (i === 0) {
               $container.prepend($el);
@@ -65,8 +65,8 @@ jQuery.entwine('ss', ($) => {
       var $this = $(this);
 
       $this
-        .parents('.Select-multi-value-wrapper')
-        .find('.Select-value')
+        .parents('.treedropdownfield__value-container')
+        .find('.treedropdownfield__multi-value')
         .removeClass('active');
 
       if (!$this.hasClass('active')) {
@@ -77,10 +77,10 @@ jQuery.entwine('ss', ($) => {
 
   $(
     `${sortableFieldClass 
-    } .Select-value .prev` +
+    } .treedropdownfield__multi-value .prev` +
 			`,${ 
 			  sortableFieldClass 
-			} .Select-value .next`,
+			} .treedropdownfield__multi-value .next`,
   ).entwine({
     onmatch() {
       this._super();
@@ -89,23 +89,23 @@ jQuery.entwine('ss', ($) => {
       console.log('Select sortable: prev/next click');
 
       var $this = $(this);
-      var $val = $this.parents('.Select-value');
+      var $val = $this.parents('.treedropdownfield__multi-value');
 
       // hide menu
-      $this.parents('.Select').removeClass('is-open');
-      var $menu = $this.parents('.Select').find('.Select-menu-outer');
+      $this.parents('.treedropdownfield').removeClass('is-open');
+      var $menu = $this.parents('.treedropdownfield').find('.treedropdownfield__menu');
       if ($menu.length) {
         $menu.hide();
       }
 
       // move prev
       if ($this.hasClass('prev')) {
-        $val.insertBefore($val.prev('.Select-value'));
+        $val.insertBefore($val.prev('.treedropdownfield__multi-value'));
       }
 
       // move next
       if ($this.hasClass('next')) {
-        $val.insertAfter($val.next('.Select-value'));
+        $val.insertAfter($val.next('.treedropdownfield__multi-value'));
       }
 
       this._saveOrder();
@@ -118,7 +118,7 @@ jQuery.entwine('ss', ($) => {
       var name = schema['name'];
 
       var vals = [];
-      $parent.find('.Select-value').each((i, el) => {
+      $parent.find('.treedropdownfield__multi-value').each((i, el) => {
         vals[i] = $(el).attr('data-val');
       });
 
